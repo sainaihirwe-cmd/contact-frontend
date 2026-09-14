@@ -28,11 +28,17 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
     setError('')
     try {
       const token = localStorage.getItem('authToken')
+      if (!token) {
+        setError('Please log in to view products.')
+        onLogout()
+        return
+      }
+
       const res = await fetch(apiUrl('/api/products'), {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token ? `Bearer ${token}` : '',
+          'Authorization': `Bearer ${token}`,
         },
       })
       const data = await res.json()
