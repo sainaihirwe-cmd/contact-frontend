@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'preact/hooks'
+import { useState, useEffect } from 'preact/hooks'
 import { apiUrl } from '../api'
 import '../styles/ProductDashboard.css'
 
@@ -18,7 +18,6 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
     image: null,
   })
   const [submitting, setSubmitting] = useState(false)
-  const imageInputRef = useRef(null)
 
   useEffect(() => {
     fetchProducts()
@@ -98,13 +97,6 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
         ...prev,
         [name]: value,
       }))
-    }
-  }
-
-  const removeSelectedImage = () => {
-    setFormData((prev) => ({ ...prev, image: null }))
-    if (imageInputRef.current) {
-      imageInputRef.current.value = ''
     }
   }
 
@@ -370,24 +362,6 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
                       required
                       placeholder="Enter category (e.g., Electronics, Clothing)"
                     />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="image">Product Image</label>
-                    <input
-                      type="file"
-                      id="image"
-                      name="image"
-                      ref={imageInputRef}
-                      onChange={handleInputChange}
-                      accept="image/*"
-                      placeholder="Upload product image"
-                    />
-                    {formData.image && (
-                      <button type="button" className="btn-remove-image" onClick={removeSelectedImage}>
-                        Remove selected file
-                      </button>
-                    )}
                   </div>
 
                   <div className="modal-actions">
