@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks'
+import { useState, useEffect, useRef } from 'preact/hooks'
 import { apiUrl } from '../api'
 import '../styles/ProductDashboard.css'
 
@@ -18,6 +18,7 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
     image: null,
   })
   const [submitting, setSubmitting] = useState(false)
+  const imageInputRef = useRef(null)
 
   useEffect(() => {
     fetchProducts()
@@ -97,6 +98,13 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
         ...prev,
         [name]: value,
       }))
+    }
+  }
+
+  const removeSelectedImage = () => {
+    setFormData((prev) => ({ ...prev, image: null }))
+    if (imageInputRef.current) {
+      imageInputRef.current.value = ''
     }
   }
 
@@ -204,7 +212,7 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
   const closeModal = () => {
     setShowModal(false)
     setSelectedProduct(null)
-    setFormData({ name: '', description: '', price: '', quantity: '', category: '' })
+    setFormData({ name: '', description: '', price: '', quantity: '', category: '', image: null })
   }
 
   return (
@@ -370,10 +378,16 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
                       type="file"
                       id="image"
                       name="image"
+                      ref={imageInputRef}
                       onChange={handleInputChange}
                       accept="image/*"
                       placeholder="Upload product image"
                     />
+                    {formData.image && (
+                      <button type="button" className="btn-remove-image" onClick={removeSelectedImage}>
+                        Remove selected file
+                      </button>
+                    )}
                   </div>
 
                   <div className="modal-actions">
