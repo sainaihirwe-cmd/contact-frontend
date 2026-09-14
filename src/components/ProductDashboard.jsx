@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'preact/hooks'
+import { apiUrl } from '../api'
 import '../styles/ProductDashboard.css'
 
 export function ProductDashboard({ userName, userRole, onLogout }) {
@@ -27,7 +28,7 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
     setError('')
     try {
       const token = localStorage.getItem('authToken')
-      const res = await fetch('/api/products', {
+      const res = await fetch(apiUrl('/api/products'), {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -100,11 +101,11 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
 
     try {
       const token = localStorage.getItem('authToken')
-      let url = '/api/products'
+      let url = apiUrl('/api/products')
       let method = 'POST'
 
       if (modalMode === 'edit') {
-        url = `/api/products/${selectedProduct._id}`
+        url = apiUrl(`/api/products/${selectedProduct._id}`)
         method = 'PUT'
       }
 
@@ -155,7 +156,7 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
 
     try {
       const token = localStorage.getItem('authToken')
-      const res = await fetch(`/api/products/${selectedProduct._id}`, {
+      const res = await fetch(apiUrl(`/api/products/${selectedProduct._id}`), {
         method: 'DELETE',
         headers: {
           'Authorization': token ? `Bearer ${token}` : '',

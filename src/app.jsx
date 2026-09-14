@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
 import { Navbar } from './components/Navbar'
+import { apiUrl } from './api'
 import './app.css'
 
 const initialForm = {
@@ -31,7 +32,7 @@ export function App() {
       setLoadingContacts(true)
       setContactsError('')
 
-      const response = await fetch('/api/contact', {
+      const response = await fetch(apiUrl('/api/contact'), {
         headers: {
           Accept: 'application/json',
         },
@@ -136,7 +137,7 @@ export function App() {
     try {
       const payload = sanitizePayload()
 
-      const response = await fetch('/api/contact', {
+      const response = await fetch(apiUrl('/api/contact'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
