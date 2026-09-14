@@ -38,7 +38,7 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       })
       const data = await res.json()
@@ -107,6 +107,12 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
 
     try {
       const token = localStorage.getItem('authToken')
+      if (!token) {
+        setError('Please log in to manage products.')
+        onLogout()
+        return
+      }
+
       let url = apiUrl('/api/products')
       let method = 'POST'
 
@@ -129,7 +135,7 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
       const res = await fetch(url, {
         method,
         headers: {
-          'Authorization': token ? `Bearer ${token}` : '',
+          Authorization: `Bearer ${token}`,
         },
         body: formDataToSend,
       })
@@ -162,10 +168,16 @@ export function ProductDashboard({ userName, userRole, onLogout }) {
 
     try {
       const token = localStorage.getItem('authToken')
+      if (!token) {
+        setError('Please log in to manage products.')
+        onLogout()
+        return
+      }
+
       const res = await fetch(apiUrl(`/api/products/${selectedProduct._id}`), {
         method: 'DELETE',
         headers: {
-          'Authorization': token ? `Bearer ${token}` : '',
+          Authorization: `Bearer ${token}`,
         },
       })
 
